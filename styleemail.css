@@ -9,7 +9,7 @@ body {
 }
 .form {
     width: 345px;
-    height: 730px;
+    height: 530px;
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(5px);
