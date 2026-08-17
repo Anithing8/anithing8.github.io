@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Doc Toolkit</title>
   
-  <!-- CDNs -->
+  <!-- External Libraries -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/pdf-lib@1.17.9/dist/pdf-lib.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script> <!-- Replaced emojis with Lucide Icons -->
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   
+  <!-- Tailwind Config -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -22,65 +25,10 @@
       }
     }
   </script>
-
-  <style>
-    /* Base resets */
-    body { touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* Liquid Background Orbs */
-    .blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      z-index: -1;
-      animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.8;
-    }
-    .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #bae6fd; animation-delay: 0s; }
-    .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #ddd6fe; animation-delay: -5s; }
-    .blob-3 { top: 40%; left: 30%; width: 45vw; height: 45vw; background: #a7f3d0; animation-delay: -10s; }
-    
-    /* Dark Mode Orbs */
-    .dark .blob-1 { background: #1e1b4b; }
-    .dark .blob-2 { background: #064e3b; }
-    .dark .blob-3 { background: #0f766e; }
-
-    @keyframes float {
-      0% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(5vw, -5vh) scale(1.1); }
-      66% { transform: translate(-3vw, 4vh) scale(0.9); }
-      100% { transform: translate(4vw, 6vh) scale(1.05); }
-    }
-    
-    /* Glassmorphism Utilities */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-    .dark .glass-panel {
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    .glass-input {
-      background: rgba(255, 255, 255, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .dark .glass-input {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    }
-  </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen pb-28 font-sans antialiased transition-colors duration-300 relative overflow-x-hidden">
 
-  <!-- Liquid Background -->
+  <!-- Dynamic Liquid Background -->
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
@@ -89,62 +37,64 @@
   <div class="max-w-md mx-auto pt-4 px-4 sticky top-0 z-30">
     <header class="glass-panel rounded-2xl px-4 py-3 flex items-center justify-between shadow-lg shadow-black/5 dark:shadow-black/20">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
+          <i data-lucide="zap" class="w-5 h-5"></i>
         </div>
         <h1 class="text-base font-bold tracking-tight">Doc Toolkit</h1>
       </div>
-      <button id="themeToggle" class="p-2 rounded-xl glass-input text-gray-700 dark:text-slate-300 text-xs font-medium hover:scale-105 transition-transform">
-        ☀️ Light
+      <button id="themeToggle" class="p-2 rounded-xl glass-input text-gray-700 dark:text-slate-300 text-xs font-medium hover:scale-105 transition-transform flex items-center gap-2">
+        <i data-lucide="sun" class="w-4 h-4" id="themeIcon"></i>
+        <span id="themeText">Light</span>
       </button>
     </header>
   </div>
 
-  <!-- Main View -->
+  <!-- Main View Area -->
   <main class="max-w-md mx-auto p-4 mt-2">
 
-    <!-- Dashboard -->
+    <!-- Dashboard (Grid View) -->
     <section id="dashboardView">
       <div class="mb-6 relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🔍</span>
-        <input type="text" id="toolSearch" placeholder="Search all 20+ tools..." oninput="filterTools()" class="w-full text-sm py-3.5 pl-10 pr-4 rounded-xl glass-input focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder-gray-500 dark:placeholder-gray-400" />
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5"></i>
+        <input type="text" id="toolSearch" placeholder="Search all tools..." class="w-full text-sm py-3.5 pl-10 pr-4 rounded-xl glass-input focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder-gray-500 dark:placeholder-gray-400" />
       </div>
 
       <div class="mb-4 flex items-center justify-between px-1">
         <h2 id="tabHeading" class="text-lg font-bold tracking-tight">Identity Tools</h2>
-        <span id="toolCount" class="text-xs px-2.5 py-1 rounded-full glass-panel font-medium">6 Tools</span>
+        <span id="toolCount" class="text-xs px-2.5 py-1 rounded-full glass-panel font-medium">--</span>
       </div>
 
-      <!-- Tools Grid -->
       <div id="toolsGrid" class="grid grid-cols-1 gap-3"></div>
     </section>
 
-    <!-- Tool Workspace -->
+    <!-- Tool Workspace (Action View) -->
     <section id="workspaceView" class="hidden">
-      <button id="backBtn" class="mb-4 inline-flex items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:opacity-80 transition-opacity px-1">
-        ← Back to toolkit
+      <button id="backBtn" class="mb-4 inline-flex items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:opacity-80 transition-opacity px-1 gap-1">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to toolkit
       </button>
 
       <div class="glass-panel rounded-3xl p-5 shadow-xl shadow-black/5 dark:shadow-black/20">
         <div class="flex items-center space-x-3 mb-2">
-          <span id="toolIcon" class="text-3xl drop-shadow-sm">🪪</span>
+          <div id="toolIconContainer" class="text-indigo-500 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 p-2 rounded-lg">
+            <!-- Icon injected via JS -->
+          </div>
           <div>
-            <h3 id="toolTitle" class="text-lg font-bold leading-tight">Tool Title</h3>
-            <p id="toolDesc" class="text-xs text-gray-600 dark:text-slate-400 mt-0.5">Description</p>
+            <h3 id="toolTitle" class="text-lg font-bold leading-tight">Loading...</h3>
+            <p id="toolDesc" class="text-xs text-gray-600 dark:text-slate-400 mt-0.5">Please wait</p>
           </div>
         </div>
 
+        <!-- Forms get injected here -->
         <div id="toolFormContainer" class="space-y-4 mt-5 pt-4 border-t border-gray-200/30 dark:border-slate-700/50"></div>
 
-        <!-- Result Area -->
+        <!-- Results Output Area -->
         <div id="outputArea" class="mt-5 pt-5 border-t border-gray-200/30 dark:border-slate-700/50 hidden text-center">
           <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-3 flex items-center justify-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            Processing Complete
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Processing Complete
           </p>
           <div id="previewContainer" class="max-h-64 overflow-hidden rounded-xl flex items-center justify-center glass-input p-2 mb-4"></div>
-          <a id="downloadBtn" href="#" download="processed_file" class="w-full inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:-translate-y-0.5">
-            Download File
+          <a id="downloadBtn" href="#" download="processed_file" class="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:-translate-y-0.5">
+            <i data-lucide="download" class="w-4 h-4"></i> Download File
           </a>
         </div>
       </div>
@@ -152,670 +102,25 @@
 
   </main>
 
-  <!-- Floating Bottom Dock -->
+  <!-- Floating Bottom Navigation -->
   <div class="fixed bottom-6 left-4 right-4 z-30 max-w-sm mx-auto">
     <nav class="glass-panel rounded-full px-2 py-2 flex justify-around shadow-2xl shadow-black/10 dark:shadow-black/40 border border-white/40 dark:border-white/10">
-      <button onclick="switchTab('identity')" id="tab-identity" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-indigo-600 dark:text-indigo-400 bg-white/30 dark:bg-black/20 shadow-sm">
-        <span class="text-lg mb-0.5 drop-shadow-sm">🪪</span>
+      <button data-tab="identity" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-indigo-600 dark:text-indigo-400 bg-white/30 dark:bg-black/20 shadow-sm gap-1">
+        <i data-lucide="contact" class="w-5 h-5"></i>
         <span class="text-[10px] font-semibold tracking-wide">Identity</span>
       </button>
-      <button onclick="switchTab('images')" id="tab-images" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white">
-        <span class="text-lg mb-0.5 opacity-80">🖼️</span>
+      <button data-tab="images" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white gap-1">
+        <i data-lucide="image" class="w-5 h-5 opacity-80"></i>
         <span class="text-[10px] font-medium tracking-wide">Images</span>
       </button>
-      <button onclick="switchTab('pdfs')" id="tab-pdfs" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white">
-        <span class="text-lg mb-0.5 opacity-80">📑</span>
+      <button data-tab="pdfs" class="nav-btn w-20 py-2 flex flex-col items-center justify-center rounded-full transition-all text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white gap-1">
+        <i data-lucide="file-text" class="w-5 h-5 opacity-80"></i>
         <span class="text-[10px] font-medium tracking-wide">PDFs</span>
       </button>
     </nav>
   </div>
 
-  <script>
-    let currentTab = 'identity';
-    let activeTool = null;
-
-    // Tool Config
-    const TOOLS = {
-      identity: [
-        { id: 'pan_resizer', icon: '🪪', name: 'PAN Card Photo & Sig', desc: 'Format photo and signature to exact portal specifications', type: 'pan' },
-        { id: 'passport_photo', icon: '📷', name: 'Passport Photo Maker', desc: 'Standard 35x45mm ratio or 6-copy printable sheet', type: 'passport' },
-        { id: 'dl_photo', icon: '🚗', name: 'Driving Licence Resizer', desc: 'Resize & format photo for portal uploads', type: 'dl' },
-        { id: 'voter_photo', icon: '🗳️', name: 'Voter ID Photo Maker', desc: 'Formats portrait to standard card dimensions', type: 'voter' },
-        { id: 'aadhaar_merge', icon: '🔗', name: 'Merge ID Cards', desc: 'Combine front & back of any ID card cleanly', type: 'aadhaar' },
-        { id: 'dop_stamp', icon: '✍️', name: 'Photo Date Stamp', desc: 'Add applicant name & photo date banner to portraits', type: 'dop' },
-        { id: 'signature_clean', icon: '✒️', name: 'Signature Clean-up', desc: 'Convert handwritten signature to pure black & white', type: 'sig_clean' }
-      ],
-      images: [
-        { id: 'compress_kb', icon: '🗜️', name: 'Compress Image (KB)', desc: 'Shrink file size strictly below target KB', type: 'compress' },
-        { id: 'resize_exact', icon: '📐', name: 'Exact Pixel Resize', desc: 'Change dimensions to exact custom width/height', type: 'resize' },
-        { id: 'crop_image', icon: '✂️', name: 'Smart Crop', desc: 'Crop to custom square or standard rectangle ratios', type: 'crop' },
-        { id: 'rotate_image', icon: '🔄', name: 'Rotate & Flip', desc: 'Adjust orientation 90°, 180°, or 270°', type: 'rotate' },
-        { id: 'photo_enhancer', icon: '✨', name: 'Photo Enhancer', desc: 'Auto-adjust brightness, contrast, and clarity', type: 'enhance' },
-        { id: 'format_convert', icon: '🔁', name: 'Format Converter', desc: 'Fast conversion between JPG, PNG, and WebP', type: 'format' },
-        { id: 'convert_dpi', icon: '🎯', name: 'DPI Modifier', desc: 'Update resolution metadata (200/300/600 DPI)', type: 'dpi' }
-      ],
-      pdfs: [
-        { id: 'pdf_merge', icon: '📑', name: 'Merge PDFs', desc: 'Combine multiple files into a single document', type: 'pdf_merge' },
-        { id: 'pdf_split', icon: '✂️', name: 'Extract Pages', desc: 'Pull a specific page range into a new PDF', type: 'pdf_split' },
-        { id: 'pdf_compress', icon: '🗜️', name: 'Compress PDF', desc: 'Optimize underlying streams to reduce file size', type: 'pdf_compress' },
-        { id: 'img_to_pdf', icon: '🖼️', name: 'Images to PDF', desc: 'Convert photos into standard A4 PDF pages', type: 'img_to_pdf' },
-        { id: 'pdf_rotate', icon: '🔄', name: 'Rotate Document', desc: 'Turn all PDF pages 90°, 180°, or 270°', type: 'pdf_rotate' },
-        { id: 'pdf_protect', icon: '🔒', name: 'Encrypt PDF', desc: 'Lock document with a secure user password', type: 'pdf_protect' },
-        { id: 'pdf_unlock', icon: '🔓', name: 'Unlock PDF', desc: 'Remove password protection from a file', type: 'pdf_unlock' }
-      ]
-    };
-
-    // UI Toggles
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      themeToggle.innerText = isDark ? '☀️ Light' : '🌙 Dark';
-    });
-
-    function switchTab(tabKey) {
-      currentTab = tabKey;
-      
-      // Reset dock styles
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'bg-white/30', 'dark:bg-black/20', 'shadow-sm');
-        btn.classList.add('text-gray-500', 'dark:text-slate-400');
-        btn.querySelector('span:nth-child(2)').classList.replace('font-semibold', 'font-medium');
-        btn.querySelector('span:first-child').classList.add('opacity-80');
-      });
-      
-      // Active dock style
-      const activeBtn = document.getElementById(`tab-${tabKey}`);
-      activeBtn.classList.remove('text-gray-500', 'dark:text-slate-400');
-      activeBtn.classList.add('text-indigo-600', 'dark:text-indigo-400', 'bg-white/30', 'dark:bg-black/20', 'shadow-sm');
-      activeBtn.querySelector('span:nth-child(2)').classList.replace('font-medium', 'font-semibold');
-      activeBtn.querySelector('span:first-child').classList.remove('opacity-80');
-
-      // Update Header
-      document.getElementById('tabHeading').innerText = 
-        tabKey === 'identity' ? 'Identity Tools' : 
-        tabKey === 'images' ? 'Image Utilities' : 'PDF Actions';
-      
-      document.getElementById('toolSearch').value = '';
-      renderDashboard();
-      showDashboard();
-    }
-
-    function showDashboard() {
-      document.getElementById('dashboardView').classList.remove('hidden');
-      document.getElementById('workspaceView').classList.add('hidden');
-      document.getElementById('outputArea').classList.add('hidden');
-    }
-
-    function showWorkspace(tool) {
-      activeTool = tool;
-      document.getElementById('dashboardView').classList.add('hidden');
-      document.getElementById('workspaceView').classList.remove('hidden');
-      document.getElementById('toolIcon').innerText = tool.icon;
-      document.getElementById('toolTitle').innerText = tool.name;
-      document.getElementById('toolDesc').innerText = tool.desc;
-      document.getElementById('outputArea').classList.add('hidden');
-      renderToolForm(tool);
-    }
-
-    document.getElementById('backBtn').addEventListener('click', showDashboard);
-
-    function filterTools() {
-      const q = document.getElementById('toolSearch').value.toLowerCase();
-      renderDashboard(q);
-    }
-
-    // Render Tools
-    function renderDashboard(filterQuery = '') {
-      const container = document.getElementById('toolsGrid');
-      container.innerHTML = '';
-      
-      let list = TOOLS[currentTab];
-      if (filterQuery) {
-        list = [...TOOLS.identity, ...TOOLS.images, ...TOOLS.pdfs].filter(t => 
-          t.name.toLowerCase().includes(filterQuery) || t.desc.toLowerCase().includes(filterQuery)
-        );
-      }
-
-      document.getElementById('toolCount').innerText = `${list.length} Tools`;
-
-      list.forEach(tool => {
-        const card = document.createElement('div');
-        // Glass card class
-        card.className = "glass-panel p-4 rounded-2xl flex items-center justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-sm";
-        card.innerHTML = `
-          <div class="flex items-center space-x-3.5">
-            <div class="w-10 h-10 rounded-full glass-input flex items-center justify-center text-xl shadow-inner drop-shadow-sm">
-              ${tool.icon}
-            </div>
-            <div>
-              <h4 class="text-sm font-bold leading-snug">${tool.name}</h4>
-              <p class="text-[11px] text-gray-500 dark:text-slate-400 line-clamp-1 mt-0.5">${tool.desc}</p>
-            </div>
-          </div>
-          <span class="text-gray-400 dark:text-slate-500 text-sm opacity-50">→</span>
-        `;
-        card.addEventListener('click', () => showWorkspace(tool));
-        container.appendChild(card);
-      });
-    }
-
-    // Shared input CSS class
-    const inputClass = "w-full text-sm p-3 rounded-xl glass-input focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all";
-    const labelClass = "block text-xs font-semibold mb-1.5 opacity-80 uppercase tracking-wider";
-    const btnClass = "w-full py-3.5 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all active:scale-95";
-
-    function renderToolForm(tool) {
-      const c = document.getElementById('toolFormContainer');
-      c.innerHTML = '';
-
-      if (tool.type === 'pan') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Document Type</label>
-            <select id="panType" class="${inputClass}">
-              <option value="photo">Photo (213x213 px)</option>
-              <option value="signature">Signature (400x200 px)</option>
-            </select>
-          </div>
-          <div><label class="${labelClass}">Upload File</label><input type="file" id="panFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 file:cursor-pointer cursor-pointer" /></div>
-          <button onclick="processPAN()" class="${btnClass}">Format Document</button>`;
-      }
-      else if (tool.type === 'passport') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Portrait</label><input type="file" id="passFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div class="flex items-center space-x-3 p-3 glass-input rounded-xl"><input type="checkbox" id="passGrid" class="w-4 h-4 rounded text-indigo-600 accent-indigo-600"><label for="passGrid" class="text-sm font-medium">Create 6-Copy Print Sheet</label></div>
-          <button onclick="processPassport()" class="${btnClass}">Generate Photo</button>`;
-      }
-      else if (tool.type === 'dl' || tool.type === 'voter') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Photo</label><input type="file" id="${tool.type}File" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <button onclick="tool.type === 'dl' ? processDL() : processVoter()" class="${btnClass}">Format Photo</button>`;
-      }
-      else if (tool.type === 'aadhaar') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Front Image</label><input type="file" id="aadhFront" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Back Image</label><input type="file" id="aadhBack" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Layout</label>
-            <select id="aadhLayout" class="${inputClass}"><option value="vertical">Vertical Stack</option><option value="horizontal">Side by Side</option></select>
-          </div>
-          <button onclick="processAadhaar()" class="${btnClass}">Merge Cards</button>`;
-      }
-      else if (tool.type === 'dop') {
-        const today = new Date().toISOString().split('T')[0];
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Photo</label><input type="file" id="dopFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Name</label><input type="text" id="dopName" placeholder="e.g. JOHN DOE" class="${inputClass} uppercase" /></div>
-          <div><label class="${labelClass}">Date</label><input type="text" id="dopDate" value="${today}" class="${inputClass}" /></div>
-          <button onclick="processDOP()" class="${btnClass}">Stamp Photo</button>`;
-      }
-      else if (tool.type === 'sig_clean') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Signature</label><input type="file" id="sigFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div class="p-4 glass-input rounded-xl"><label class="${labelClass}">Threshold Level</label><input type="range" id="sigThreshold" min="50" max="220" value="130" class="w-full accent-indigo-600" /></div>
-          <button onclick="processSigClean()" class="${btnClass}">Enhance Signature</button>`;
-      }
-      else if (tool.type === 'compress') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="compFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Target Size (KB)</label><input type="number" id="compTarget" value="50" class="${inputClass}" /></div>
-          <button onclick="processCompressKB()" class="${btnClass}">Compress File</button>`;
-      }
-      else if (tool.type === 'resize') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="resFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div class="grid grid-cols-2 gap-3">
-            <div><label class="${labelClass}">Width (px)</label><input type="number" id="resW" value="600" class="${inputClass}" /></div>
-            <div><label class="${labelClass}">Height (px)</label><input type="number" id="resH" value="600" class="${inputClass}" /></div>
-          </div>
-          <button onclick="processExactResize()" class="${btnClass}">Resize Image</button>`;
-      }
-      else if (tool.type === 'crop') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="cropFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Aspect Ratio</label>
-            <select id="cropRatio" class="${inputClass}">
-              <option value="1:1">1:1 Square</option><option value="3:4">3:4 Portrait</option>
-              <option value="4:3">4:3 Landscape</option><option value="16:9">16:9 Wide</option>
-            </select>
-          </div>
-          <button onclick="processCrop()" class="${btnClass}">Crop Image</button>`;
-      }
-      else if (tool.type === 'rotate') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="rotFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Angle</label>
-            <select id="rotAngle" class="${inputClass}">
-              <option value="90">90° Clockwise</option><option value="180">180° Flip</option><option value="270">270° Counter</option>
-            </select>
-          </div>
-          <button onclick="processRotate()" class="${btnClass}">Rotate</button>`;
-      }
-      else if (tool.type === 'enhance') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Photo</label><input type="file" id="enhFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <button onclick="processEnhance()" class="${btnClass}">Auto-Enhance</button>`;
-      }
-      else if (tool.type === 'format') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="fmtFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Convert To</label>
-            <select id="fmtTarget" class="${inputClass}"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select>
-          </div>
-          <button onclick="processFormat()" class="${btnClass}">Convert</button>`;
-      }
-      else if (tool.type === 'dpi') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Image</label><input type="file" id="dpiFile" accept="image/*" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Target DPI</label>
-            <select id="dpiVal" class="${inputClass}"><option value="200">200 DPI</option><option value="300">300 DPI</option><option value="600">600 DPI</option></select>
-          </div>
-          <button onclick="processDPI()" class="${btnClass}">Set DPI</button>`;
-      }
-      else if (tool.type === 'pdf_merge') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Select PDFs</label><input type="file" id="pdfMergeFiles" accept="application/pdf" multiple class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <button onclick="processPDFMerge()" class="${btnClass}">Merge PDFs</button>`;
-      }
-      else if (tool.type === 'pdf_split') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload PDF</label><input type="file" id="pdfSplitFile" accept="application/pdf" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div class="grid grid-cols-2 gap-3">
-            <div><label class="${labelClass}">Start Page</label><input type="number" id="splitStart" value="1" min="1" class="${inputClass}" /></div>
-            <div><label class="${labelClass}">End Page</label><input type="number" id="splitEnd" value="1" min="1" class="${inputClass}" /></div>
-          </div>
-          <button onclick="processPDFSplit()" class="${btnClass}">Extract Pages</button>`;
-      }
-      else if (tool.type === 'pdf_compress') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload PDF</label><input type="file" id="pdfCompFile" accept="application/pdf" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <button onclick="processPDFCompress()" class="${btnClass}">Compress PDF</button>`;
-      }
-      else if (tool.type === 'img_to_pdf') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Select Images</label><input type="file" id="imgPdfFiles" accept="image/*" multiple class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <button onclick="processImagesToPDF()" class="${btnClass}">Convert to PDF</button>`;
-      }
-      else if (tool.type === 'pdf_rotate') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload PDF</label><input type="file" id="pdfRotFile" accept="application/pdf" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Angle</label>
-            <select id="pdfRotAngle" class="${inputClass}"><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
-          </div>
-          <button onclick="processPDFRotate()" class="${btnClass}">Rotate PDF</button>`;
-      }
-      else if (tool.type === 'pdf_protect') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload PDF</label><input type="file" id="pdfProtFile" accept="application/pdf" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Password</label><input type="password" id="pdfProtPass" placeholder="Secure password" class="${inputClass}" /></div>
-          <button onclick="processPDFProtect()" class="${btnClass}">Encrypt PDF</button>`;
-      }
-      else if (tool.type === 'pdf_unlock') {
-        c.innerHTML = `
-          <div><label class="${labelClass}">Upload Locked PDF</label><input type="file" id="pdfUnlFile" accept="application/pdf" class="${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-indigo-600 file:text-white cursor-pointer" /></div>
-          <div><label class="${labelClass}">Password</label><input type="password" id="pdfUnlPass" placeholder="Current password" class="${inputClass}" /></div>
-          <button onclick="processPDFUnlock()" class="${btnClass}">Unlock PDF</button>`;
-      }
-    }
-
-    // Logic Helpers
-    function showResult(dataUrl, filename, isPdf = false) {
-      const output = document.getElementById('outputArea');
-      const preview = document.getElementById('previewContainer');
-      const dlBtn = document.getElementById('downloadBtn');
-
-      preview.innerHTML = '';
-      if (isPdf) {
-        preview.innerHTML = `<div class="py-6 text-center text-sm text-gray-600 dark:text-slate-300 font-medium">📄 PDF Ready</div>`;
-      } else {
-        const img = new Image();
-        img.src = dataUrl;
-        img.className = 'max-h-40 object-contain rounded shadow-sm';
-        preview.appendChild(img);
-      }
-
-      dlBtn.href = dataUrl;
-      dlBtn.download = filename;
-      output.classList.remove('hidden');
-    }
-
-    function loadImage(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-          img.src = reader.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // Helper for async blob conversion
-    function getCanvasBlob(canvas, mimeType, quality) {
-      return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob), mimeType, quality);
-      });
-    }
-
-    // Tools Processing Logic
-
-    async function processPAN() {
-      const file = document.getElementById('panFile').files[0];
-      if (!file) return alert('Select image');
-      const type = document.getElementById('panType').value;
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas');
-      const w = type === 'photo' ? 213 : 400, h = type === 'photo' ? 213 : 200;
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, w, h);
-      showResult(canvas.toDataURL('image/jpeg', 0.9), `pan_${type}.jpg`);
-    }
-
-    async function processPassport() {
-      const file = document.getElementById('passFile').files[0];
-      if (!file) return alert('Select photo');
-      const isGrid = document.getElementById('passGrid').checked;
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (!isGrid) {
-        canvas.width = 413; canvas.height = 531;
-        ctx.drawImage(img, 0, 0, 413, 531);
-        showResult(canvas.toDataURL('image/jpeg', 0.95), 'passport.jpg');
-      } else {
-        canvas.width = 1200; canvas.height = 1800;
-        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, 1200, 1800);
-        const pos = [[160,200],[680,200],[160,700],[680,700],[160,1200],[680,1200]];
-        pos.forEach(([x, y]) => {
-          ctx.strokeStyle = '#CCC'; ctx.strokeRect(x-1, y-1, 352, 452);
-          ctx.drawImage(img, x, y, 350, 450);
-        });
-        showResult(canvas.toDataURL('image/jpeg', 0.95), 'passport_sheet.jpg');
-      }
-    }
-
-    async function processDL() {
-      const file = document.getElementById('dlFile').files[0];
-      if (!file) return alert('Select photo');
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas');
-      canvas.width = 420; canvas.height = 525;
-      canvas.getContext('2d').drawImage(img, 0, 0, 420, 525);
-      showResult(canvas.toDataURL('image/jpeg', 0.9), 'dl_photo.jpg');
-    }
-
-    async function processVoter() {
-      const file = document.getElementById('voterFile').files[0];
-      if (!file) return alert('Select photo');
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas');
-      canvas.width = 240; canvas.height = 320;
-      canvas.getContext('2d').drawImage(img, 0, 0, 240, 320);
-      showResult(canvas.toDataURL('image/jpeg', 0.9), 'voter_photo.jpg');
-    }
-
-    async function processAadhaar() {
-      const f1 = document.getElementById('aadhFront').files[0], f2 = document.getElementById('aadhBack').files[0];
-      if (!f1 || !f2) return alert('Select front and back');
-      const layout = document.getElementById('aadhLayout').value;
-      const [img1, img2] = await Promise.all([loadImage(f1), loadImage(f2)]);
-      const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-
-      if (layout === 'vertical') {
-        const h1 = (img1.height / img1.width) * 900, h2 = (img2.height / img2.width) * 900;
-        canvas.width = 960; canvas.height = h1 + h2 + 80;
-        ctx.fillStyle = '#FFF'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img1, 30, 30, 900, h1); ctx.drawImage(img2, 30, h1 + 50, 900, h2);
-      } else {
-        const w1 = (img1.width / img1.height) * 600, w2 = (img2.width / img2.height) * 600;
-        canvas.width = w1 + w2 + 80; canvas.height = 660;
-        ctx.fillStyle = '#FFF'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img1, 30, 30, w1, 600); ctx.drawImage(img2, w1 + 50, 30, w2, 600);
-      }
-      showResult(canvas.toDataURL('image/jpeg', 0.92), 'merged_id.jpg');
-    }
-
-    async function processDOP() {
-      const file = document.getElementById('dopFile').files[0];
-      const name = document.getElementById('dopName').value.trim() || 'APPLICANT NAME';
-      const dop = document.getElementById('dopDate').value;
-      if (!file) return alert('Select photo');
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-      canvas.width = img.width; canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const bH = Math.max(55, canvas.height * 0.18);
-      ctx.fillStyle = '#FFF'; ctx.fillRect(0, canvas.height - bH, canvas.width, bH);
-      ctx.fillStyle = '#000'; ctx.textAlign = 'center';
-      const fSize = Math.max(14, bH * 0.32);
-      ctx.font = `bold ${fSize}px sans-serif`;
-      ctx.fillText(name, canvas.width / 2, canvas.height - bH + (fSize * 1.2));
-      ctx.font = `${fSize * 0.85}px sans-serif`;
-      ctx.fillText(`DOP: ${dop}`, canvas.width / 2, canvas.height - (fSize * 0.5));
-      showResult(canvas.toDataURL('image/jpeg', 0.95), 'stamped_photo.jpg');
-    }
-
-    async function processSigClean() {
-      const file = document.getElementById('sigFile').files[0];
-      const th = parseInt(document.getElementById('sigThreshold').value, 10);
-      if (!file) return alert('Select signature');
-      const img = await loadImage(file);
-      const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-      canvas.width = img.width; canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < d.data.length; i += 4) {
-        const val = (0.299*d.data[i] + 0.587*d.data[i+1] + 0.114*d.data[i+2]) < th ? 0 : 255;
-        d.data[i] = d.data[i+1] = d.data[i+2] = val;
-      }
-      ctx.putImageData(d, 0, 0);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), 'clean_sig.jpg');
-    }
-
-    // UPDATED SMART COMPRESSION LOGIC
-    async function processCompressKB() {
-      const file = document.getElementById('compFile').files[0];
-      const targetKB = parseInt(document.getElementById('compTarget').value, 10);
-      if (!file || !targetKB) return alert('Select image and target KB');
-
-      const btn = document.querySelector('#toolFormContainer button');
-      const originalText = btn.innerText;
-      btn.innerText = 'Compressing... Please wait';
-      btn.disabled = true;
-      btn.classList.add('opacity-70', 'cursor-not-allowed');
-
-      // Yield thread briefly to update button UI
-      await new Promise(r => setTimeout(r, 50));
-
-      try {
-        const img = await loadImage(file);
-        let currentWidth = img.width;
-        let currentHeight = img.height;
-
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        canvas.width = currentWidth;
-        canvas.height = currentHeight;
-        ctx.drawImage(img, 0, 0);
-
-        let q = 0.90;
-        let blob = await getCanvasBlob(canvas, 'image/jpeg', q);
-
-        while (blob.size / 1024 > targetKB) {
-          if (q > 0.15) {
-            q -= 0.10;
-          } else {
-            currentWidth = Math.floor(currentWidth * 0.85);
-            currentHeight = Math.floor(currentHeight * 0.85);
-
-            if (currentWidth < 100 || currentHeight < 100) {
-                alert(`Could only compress down to ${(blob.size / 1024).toFixed(1)}KB without destroying the image.`);
-                break;
-            }
-
-            canvas.width = currentWidth;
-            canvas.height = currentHeight;
-            
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, currentWidth, currentHeight);
-            ctx.drawImage(img, 0, 0, currentWidth, currentHeight);
-            
-            q = 0.50;
-          }
-          blob = await getCanvasBlob(canvas, 'image/jpeg', q);
-        }
-
-        const finalUrl = URL.createObjectURL(blob);
-        showResult(finalUrl, `compressed_${targetKB}kb.jpg`);
-      } catch (err) {
-        console.error(err);
-        alert('An error occurred during compression.');
-      } finally {
-        btn.innerText = originalText;
-        btn.disabled = false;
-        btn.classList.remove('opacity-70', 'cursor-not-allowed');
-      }
-    }
-
-    async function processExactResize() {
-      const file = document.getElementById('resFile').files[0];
-      const w = parseInt(document.getElementById('resW').value, 10), h = parseInt(document.getElementById('resH').value, 10);
-      if (!file || !w || !h) return alert('Provide valid dims');
-      const img = await loadImage(file), canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), `resized_${w}x${h}.jpg`);
-    }
-
-    async function processCrop() {
-      const file = document.getElementById('cropFile').files[0], ratio = document.getElementById('cropRatio').value;
-      if (!file) return alert('Select image');
-      const img = await loadImage(file);
-      let [rw, rh] = ratio.split(':').map(Number);
-      let targetW = img.width, targetH = (img.width * rh) / rw;
-      if (targetH > img.height) { targetH = img.height; targetW = (img.height * rw) / rh; }
-      
-      const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-      canvas.width = targetW; canvas.height = targetH;
-      ctx.drawImage(img, (img.width - targetW)/2, (img.height - targetH)/2, targetW, targetH, 0, 0, targetW, targetH);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), 'cropped.jpg');
-    }
-
-    async function processRotate() {
-      const file = document.getElementById('rotFile').files[0], deg = parseInt(document.getElementById('rotAngle').value, 10);
-      if (!file) return alert('Select image');
-      const img = await loadImage(file), canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-      if (deg === 90 || deg === 270) { canvas.width = img.height; canvas.height = img.width; } 
-      else { canvas.width = img.width; canvas.height = img.height; }
-      ctx.translate(canvas.width/2, canvas.height/2); ctx.rotate(deg * Math.PI / 180);
-      ctx.drawImage(img, -img.width/2, -img.height/2);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), `rotated.jpg`);
-    }
-
-    async function processEnhance() {
-      const file = document.getElementById('enhFile').files[0];
-      if (!file) return alert('Select image');
-      const img = await loadImage(file), canvas = document.createElement('canvas'), ctx = canvas.getContext('2d');
-      canvas.width = img.width; canvas.height = img.height;
-      ctx.filter = 'brightness(1.1) contrast(1.15) saturate(1.1)';
-      ctx.drawImage(img, 0, 0);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), 'enhanced.jpg');
-    }
-
-    async function processFormat() {
-      const file = document.getElementById('fmtFile').files[0], format = document.getElementById('fmtTarget').value;
-      if (!file) return alert('Select image');
-      const img = await loadImage(file), canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-      showResult(canvas.toDataURL(format, 0.95), `converted.${format.split('/')[1]}`);
-    }
-
-    async function processDPI() {
-      const file = document.getElementById('dpiFile').files[0], dpi = document.getElementById('dpiVal').value;
-      if (!file) return alert('Select image');
-      const img = await loadImage(file), canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-      showResult(canvas.toDataURL('image/jpeg', 0.95), `image_${dpi}dpi.jpg`);
-    }
-
-    async function processPDFMerge() {
-      const files = document.getElementById('pdfMergeFiles').files;
-      if (files.length < 2) return alert('Select 2+ files');
-      const merged = await PDFLib.PDFDocument.create();
-      for (let f of files) {
-        const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
-        const pages = await merged.copyPages(doc, doc.getPageIndices());
-        pages.forEach(p => merged.addPage(p));
-      }
-      showResult(URL.createObjectURL(new Blob([await merged.save()], { type: 'application/pdf' })), 'merged.pdf', true);
-    }
-
-    async function processPDFSplit() {
-      const file = document.getElementById('pdfSplitFile').files[0];
-      const start = parseInt(document.getElementById('splitStart').value, 10), end = parseInt(document.getElementById('splitEnd').value, 10);
-      if (!file) return alert('Select PDF');
-      const src = await PDFLib.PDFDocument.load(await file.arrayBuffer());
-      if (start < 1 || end > src.getPageCount() || start > end) return alert('Invalid range');
-      const newDoc = await PDFLib.PDFDocument.create();
-      const pages = await newDoc.copyPages(src, Array.from({length: end-start+1}, (_, i) => start-1+i));
-      pages.forEach(p => newDoc.addPage(p));
-      showResult(URL.createObjectURL(new Blob([await newDoc.save()], { type: 'application/pdf' })), 'split.pdf', true);
-    }
-
-    async function processPDFCompress() {
-      const file = document.getElementById('pdfCompFile').files[0];
-      if (!file) return alert('Select PDF');
-      const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
-      showResult(URL.createObjectURL(new Blob([await doc.save({ useObjectStreams: true })], { type: 'application/pdf' })), 'compressed.pdf', true);
-    }
-
-    async function processImagesToPDF() {
-      const files = document.getElementById('imgPdfFiles').files;
-      if (!files.length) return alert('Select images');
-      const doc = await PDFLib.PDFDocument.create();
-      for (let f of files) {
-        const img = f.type === 'image/png' ? await doc.embedPng(await f.arrayBuffer()) : await doc.embedJpg(await f.arrayBuffer());
-        const page = doc.addPage([595.28, 841.89]), { width, height } = img.scaleToFit(555.28, 801.89);
-        page.drawImage(img, { x: 20+(555.28-width)/2, y: 20+(801.89-height)/2, width, height });
-      }
-      showResult(URL.createObjectURL(new Blob([await doc.save()], { type: 'application/pdf' })), 'images_to.pdf', true);
-    }
-
-    async function processPDFRotate() {
-      const file = document.getElementById('pdfRotFile').files[0], deg = parseInt(document.getElementById('pdfRotAngle').value, 10);
-      if (!file) return alert('Select PDF');
-      const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
-      doc.getPages().forEach(p => p.setRotation(PDFLib.degrees(p.getRotation().angle + deg)));
-      showResult(URL.createObjectURL(new Blob([await doc.save()], { type: 'application/pdf' })), 'rotated.pdf', true);
-    }
-
-    async function processPDFProtect() {
-      const file = document.getElementById('pdfProtFile').files[0], pass = document.getElementById('pdfProtPass').value;
-      if (!file || !pass) return alert('Select PDF and password');
-      const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
-      showResult(URL.createObjectURL(new Blob([await doc.save()], { type: 'application/pdf' })), 'locked.pdf', true);
-    }
-
-    async function processPDFUnlock() {
-      const file = document.getElementById('pdfUnlFile').files[0], pass = document.getElementById('pdfUnlPass').value;
-      if (!file) return alert('Select PDF');
-      try {
-        const doc = await PDFLib.PDFDocument.load(await file.arrayBuffer(), { password: pass });
-        showResult(URL.createObjectURL(new Blob([await doc.save()], { type: 'application/pdf' })), 'unlocked.pdf', true);
-      } catch { alert('Incorrect password'); }
-    }
-
-    // Init
-    renderDashboard();
-  </script>
+  <!-- Main Application Logic -->
+  <script src="script.js"></script>
 </body>
 </html>
