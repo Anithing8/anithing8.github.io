@@ -1,6 +1,6 @@
 /**
  * Doc Toolkit - Main Application Logic
- * Handles UI state, tool configuration, and local image/PDF processing.
+ * Handles UI state, tool configuration,and local image/PDF processing.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
