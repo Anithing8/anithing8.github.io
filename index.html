@@ -492,6 +492,13 @@
       });
     }
 
+    // Helper for async blob conversion
+    function getCanvasBlob(canvas, mimeType, quality) {
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob), mimeType, quality);
+      });
+    }
+
     // Tools Processing Logic
 
     async function processPAN() {
@@ -612,19 +619,69 @@
       showResult(canvas.toDataURL('image/jpeg', 0.95), 'clean_sig.jpg');
     }
 
+    // UPDATED SMART COMPRESSION LOGIC
     async function processCompressKB() {
       const file = document.getElementById('compFile').files[0];
       const targetKB = parseInt(document.getElementById('compTarget').value, 10);
       if (!file || !targetKB) return alert('Select image and target KB');
-      const img = await loadImage(file), canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
 
-      let q = 0.95, dataUrl = canvas.toDataURL('image/jpeg', q);
-      while (dataUrl.length * 0.75 / 1024 > targetKB && q > 0.05) {
-        q -= 0.05; dataUrl = canvas.toDataURL('image/jpeg', q);
+      const btn = document.querySelector('#toolFormContainer button');
+      const originalText = btn.innerText;
+      btn.innerText = 'Compressing... Please wait';
+      btn.disabled = true;
+      btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+      // Yield thread briefly to update button UI
+      await new Promise(r => setTimeout(r, 50));
+
+      try {
+        const img = await loadImage(file);
+        let currentWidth = img.width;
+        let currentHeight = img.height;
+
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = currentWidth;
+        canvas.height = currentHeight;
+        ctx.drawImage(img, 0, 0);
+
+        let q = 0.90;
+        let blob = await getCanvasBlob(canvas, 'image/jpeg', q);
+
+        while (blob.size / 1024 > targetKB) {
+          if (q > 0.15) {
+            q -= 0.10;
+          } else {
+            currentWidth = Math.floor(currentWidth * 0.85);
+            currentHeight = Math.floor(currentHeight * 0.85);
+
+            if (currentWidth < 100 || currentHeight < 100) {
+                alert(`Could only compress down to ${(blob.size / 1024).toFixed(1)}KB without destroying the image.`);
+                break;
+            }
+
+            canvas.width = currentWidth;
+            canvas.height = currentHeight;
+            
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, currentWidth, currentHeight);
+            ctx.drawImage(img, 0, 0, currentWidth, currentHeight);
+            
+            q = 0.50;
+          }
+          blob = await getCanvasBlob(canvas, 'image/jpeg', q);
+        }
+
+        const finalUrl = URL.createObjectURL(blob);
+        showResult(finalUrl, `compressed_${targetKB}kb.jpg`);
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred during compression.');
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
       }
-      showResult(dataUrl, `compressed_${targetKB}kb.jpg`);
     }
 
     async function processExactResize() {
