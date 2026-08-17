@@ -1,4 +1,4 @@
-/* Base resets for mobile apps */
+/* Base resets for mobile app */
 body { 
   touch-action: pan-y; 
   -webkit-tap-highlight-color: transparent; 
