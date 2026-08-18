@@ -1,4 +1,3 @@
-/* Base Resets & Utilities */
 body { 
   touch-action: pan-y; 
   -webkit-tap-highlight-color: transparent; 
@@ -7,7 +6,6 @@ body {
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Liquid Background Orbs */
 .blob {
   position: fixed;
   border-radius: 50%;
@@ -21,12 +19,10 @@ body {
 .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #ddd6fe; animation-delay: -5s; }
 .blob-3 { top: 40%; left: 30%; width: 45vw; height: 45vw; background: #a7f3d0; animation-delay: -10s; }
 
-/* Dark Mode Overrides for Orbs */
 .dark .blob-1 { background: #1e1b4b; }
 .dark .blob-2 { background: #064e3b; }
 .dark .blob-3 { background: #0f766e; }
 
-/* Glassmorphism UI Components */
 .glass-panel {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(16px);
@@ -43,18 +39,16 @@ body {
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-  color: #111827; /* Dark text for light mode */
+  color: #111827;
 }
 
-/* FIX: Ensure dark mode inputs have proper contrast and text colors */
 .dark .glass-input {
-  background: rgba(30, 41, 59, 0.8); /* Dark slate background */
+  background: rgba(30, 41, 59, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-  color: #f8fafc; /* White text for dark mode */
+  color: #f8fafc;
 }
 
-/* Ensure select dropdown options inside dark mode are readable */
 .dark select.glass-input option {
   background: #1e293b;
   color: #f8fafc;
