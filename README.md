@@ -5,7 +5,7 @@ Hey there! 👋 Welcome to **Doctoolkit**. This is a personal web project I'm pu
 **Live Site:** [anithing8.github.io/Doctoolkit/](https://anithing8.github.io/Doctoolkit/)
 
 ## About the Project
-I'm building this to have a quick, client-side toolkit that runs entirely on your device. The main focus is keeping things lightweight, private, and easy to use without needing to upload your files to external servers. 
+I'm building this to have a quick, client-side toolkit that runs entirely on your device. The main focus is keeping things lightweight,private, and easy to use without needing to upload your files to external servers. 
 
 ## Current Tech Stack
 *   HTML5
